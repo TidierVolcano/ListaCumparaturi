@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lista Smart">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23667eea' width='100' height='100'/><text y='75' font-size='80' fill='white'>🛒</text></svg>">
+    <title>Lista de Cumpărături Smart</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #4caf50;
+            --danger: #f44336;
+            --warning: #ff9800;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border: #e0e0e0;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #8b9fea;
+            --secondary: #9468b2;
+            --success: #66bb6a;
+            --danger: #ef5350;
+            --warning: #ffa726;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --border: #404040;
+            --shadow: rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            touch-action: manipulation;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+            background: rgba(255,255,255,0.3);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            touch-action: manipulation;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            font-weight: bold;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .category {
+            margin-bottom: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-primary);
+            border-bottom: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .category-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .category-name input {
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            font-weight: bold;
+            color: var(--text-primary);
+            width: 100%;
+            outline: none;
+        }
+
+        .category-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .small-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2em;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            touch-action: manipulation;
+        }
+
+        .small-btn:active {
+            background: var(--border);
+        }
+
+        .products-list {
+            padding: 10px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            position: relative;
+            transition: transform 0.3s;
+            touch-action: pan-y;
+        }
+
+        .product-item.swiped {
+            transform: translateX(-80px);
+        }
+
+        .product-item.excluded {
+            opacity: 0.5;
+        }
+
+        .delete-swipe {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            background: var(--danger);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .product-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .product-name {
+            flex: 1;
+            font-size: 1em;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-secondary);
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.9);
+        }
+
+        .qty-display {
+            min-width: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .shopping-item {
+            background: var(--bg-secondary);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 5px var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .shopping-item.purchased {
+            opacity: 0.6;
+        }
+
+        .shopping-item.purchased .shopping-item-name {
+            text-decoration: line-through;
+        }
+
+        .shopping-item-category {
+            font-size: 0.8em;
+            color: var(--primary);
+            font-weight: bold;
+            padding: 4px 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .shopping-item-name {
+            flex: 1;
+            font-size: 1.1em;
+            color: var(--text-primary);
+        }
+
+        .store-section {
+            margin-bottom: 25px;
+        }
+
+        .store-header {
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 2em;
+            box-shadow: 0 4px 15px var(--shadow);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 90;
+            transition: all 0.3s;
+            touch-action: manipulation;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            width: 100%;
+            max-height: 90vh;
+            border-radius: 20px 20px 0 0;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary);
+            z-index: 10;
+        }
+
+        .modal-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            touch-action: manipulation;
+        }
+
+        .modal-close:active {
+            background: var(--border);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1em;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 10px;
+            touch-action: manipulation;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 1.2em;
+        }
+
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .share-option {
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            touch-action: manipulation;
+        }
+
+        .share-option:active {
+            transform: scale(0.95);
+            border-color: var(--primary);
+        }
+
+        .share-option-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .share-option-label {
+            font-size: 0.9em;
+            color: var(--text-primary);
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .sync-indicator {
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .settings-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .lists-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .list-card {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            touch-action: manipulation;
+        }
+
+        .list-card:active {
+            transform: scale(0.98);
+            border-color: var(--primary);
+        }
+
+        .list-card.active {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .list-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .list-card-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--text-primary);
+        }
+
+        .list-card-stats {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .share-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--border) 50%, var(--bg-secondary) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Install prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 95;
+            animation: slideUp 0.3s ease;
+        }
+
+        .install-prompt.show {
+            display: block;
+        }
+
+        .install-prompt-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .install-prompt-icon {
+            font-size: 2.5em;
+        }
+
+        .install-prompt-text {
+            flex: 1;
+        }
+
+        .install-prompt-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .install-prompt-desc {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .install-prompt-actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <h1>🛒 <span id="currentListName">Lista Smart</span></h1>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="openShareModal()" title="Distribuie">📤</button>
+                    <button class="icon-btn" onclick="openSettingsModal()" title="Setări">⚙️</button>
+                </div>
+            </div>
+            <div class="tabs">
+                <button class="tab active" data-tab="products" onclick="switchTab('products')">
+                    📦 Produse
+                </button>
+                <button class="tab" data-tab="shopping" onclick="switchTab('shopping')">
+                    🛍️ Lista <span class="badge" id="cartBadge">0</span>
+                </button>
+                <button class="tab" data-tab="lists" onclick="switchTab('lists')">
+                    📋 Liste
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Tab Produse -->
+            <div id="productsTab" class="tab-content">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalProducts">0</div>
+                        <div class="stat-label">Produse</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="categoriesCount">0</div>
+                        <div class="stat-label">Categorii</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="excludedCount">0</div>
+                        <div class="stat-label">Excluse</div>
+                    </div>
+                </div>
+                <div id="categoriesContainer"></div>
+            </div>
+
+            <!-- Tab Lista Cumpărături -->
+            <div id="shoppingTab" class="tab-content" style="display: none;">
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalItems">0</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="purchasedItems">0</div>
+                        <div class="stat-label">Cumpărate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="remainingItems">0</div>
+                        <div class="stat-label">Rămase</div>
+                    </div>
+                </div>
+                <div id="syncStatus" class="sync-status" style="display: none;">
+                    <div class="sync-indicator"></div>
+                    <span>Sincronizat cu <span id="syncUsers">1</span> utilizator(i)</span>
+                </div>
+                <div id="shoppingList"></div>
+            </div>
+
+            <!-- Tab Liste -->
+            <div id="listsTab" class="tab-content" style="display: none;">
+                <div id="listsContainer" class="lists-grid"></div>
+            </div>
+        </div>
+
+        <button class="fab" id="mainFab" onclick="handleFabClick()">+</button>
+    </div>
+
+    <!-- Modal Share -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Distribuie Lista</div>
+                <button class="modal-close" onclick="closeShareModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Link de sincronizare:</label>
+                    <input type="text" id="shareLink" readonly>
+                </div>
+                <button class="btn btn-primary" onclick="copyShareLink()">📋 Copiază Link</button>
+                <div class="share-options">
+                    <div class="share-option" onclick="shareViaWhatsApp()">
+                        <div class="share-option-icon">💬</div>
+                        <div class="share-option-label">WhatsApp</div>
+                    </div>
+                    <div class="share-option" onclick="shareViaEmail()">
+                        <div class="share-option-icon">📧</div>
+                        <div class="share-option-label">Email</div>
+                    </div>
+                    <div class="share-option" onclick="shareViaNative()">
+                        <div class="share-option-icon">📤</div>
+                        <div class="share-option-label">Altele</div>
+                    </div>
+                    <div class="share-option" onclick="exportToJSON()">
+                        <div class="share-option-icon">💾</div>
+                        <div class="share-option-label">Export</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Settings -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Setări</div>
+                <button class="modal-close" onclick="closeSettingsModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-item">
+                    <div class="settings-label">🌙 Mod Întunecat</div>
+                    <label class="switch">
+                        <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">🔔 Notificări</div>
+                    <label class="switch">
+                        <input type="checkbox" id="notificationsToggle" onchange="toggleNotifications()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <div class="settings-label">📍 Locație pentru Magazine</div>
+                    <label class="switch">
+                        <input type="checkbox" id="locationToggle" onchange="toggleLocation()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="importFromJSON()">📥 Importă Listă</button>
+                <button class="btn btn-danger" onclick="clearAllData()">🗑️ Șterge Toate Datele</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Product -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Adaugă Produs</div>
+                <button class="modal-close" onclick="closeProductModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nume Produs:</label>
+                    <input type="text" id="productName" placeholder="Ex: Lapte">
+                </div>
+                <div class="form-group">
+                    <label>Categorie:</label>
+                    <select id="productCategory"></select>
+                </div>
+                <button class="btn btn-primary" onclick="addNewProduct()">Adaugă</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Category -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Adaugă Categorie</div>
+                <button class="modal-close" onclick="closeCategoryModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nume Categorie:</label>
+                    <input type="text" id="categoryName" placeholder="Ex: Lactate">
+                </div>
+                <button class="btn btn-primary" onclick="addNewCategory()">Adaugă</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add List -->
+    <div id="listModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Listă Nouă</div>
+                <button class="modal-close" onclick="closeListModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nume Listă:</label>
+                    <input type="text" id="listName" placeholder="Ex: Săptămânal, Party">
+                </div>
+                <button class="btn btn-primary" onclick="createNewList()">Creează Listă</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt">
+        <div class="install-prompt-content">
+            <div class="install-prompt-icon">📱</div>
+            <div class="install-prompt-text">
+                <div class="install-prompt-title">Instalează Lista Smart</div>
+                <div class="install-prompt-desc">Adaugă pe ecranul principal pentru acces rapid</div>
+            </div>
+        </div>
+        <div class="install-prompt-actions">
+            <button class="btn btn-secondary" onclick="dismissInstallPrompt()">Mai târziu</button>
+            <button class="btn btn-primary" onclick="installApp()">Instalează</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Configuration (folosește propriul tău config)
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, set, onValue, push, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // IMPORTANT: Înlocuiește cu propriul tău Firebase config
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        let app, database;
+        let useFirebase = false; // Schimbă în true când ai configurat Firebase
+
+        if (useFirebase) {
+            try {
+                app = initializeApp(firebaseConfig);
+                database = getDatabase(app);
+            } catch (error) {
+                console.log('Firebase not configured, using local storage only');
+                useFirebase = false;
+            }
+        }
+
+        // State management
+        let currentListId = 'default';
+        let currentTab = 'products';
+        let lists = {
+            'default': {
+                name: 'Lista Principală',
+                categories: [
+                    {
+                        name: "Băuturi",
+                        products: ["Cola", "Smantana", "Branza", "Suc De Portocale", "Lapte", "Ulei", "Unt", "Apa", "Apa Minerala"].map(p => ({name: p, excluded: false}))
+                    },
+                    {
+                        name: "Conserve",
+                        products: ["Piper Macinat", "Piper Boabe", "Ierburi Provence", "Delikat", "Malai", "Orez Basmati", "Pâine integrala", "Zahar", "Bicarbonat"].map(p => ({name: p, excluded: false}))
+                    },
+                    {
+                        name: "Produse Grocery",
+                        products: ["Conserva Porumb", "Conserva Fasole Rosii Boabe", "Conserva Fasole Alba", "Conserva Ciuperci", "Conserva Rosii", "Ardei Urat", "Castraveti Murati", "Gogosari Murati", "Paste de Ceafa"].map(p => ({name: p, excluded: false}))
+                    },
+                    {
+                        name: "Carne & Pește",
+                        products: ["Ceapa", "Cartofi", "Moscovi", "Usturoi", "Lamai", "Rosii", "Ardei Gras", "Portocale", "Banane"].map(p => ({name: p, excluded: false}))
+                    },
+                    {
+                        name: "Produse de Patiserie",
+                        products: ["Biscuiti", "Kinder", "Bombo Cioco", "Vaschete", "Deodorant", "Spray", "Gel", "Sampon", "Balsam", "Sapun", "Perluta de dinti", "Betisoare (Predil)", "Absorbante", "Gel de dus"].map(p => ({name: p, excluded: false}))
+                    },
+                    {
+                        name: "Produse Curatenie",
+                        products: ["Biscarpet", "Decalcifiant Gress", "Domestos", "Pronto", "Cif", "Vanish", "Pronto Parchet", "Bic-Uri", "Pungi Papuci", "Dero", "Clor Geamuri", "Crema Papuci"].map(p => ({name: p, excluded: false}))
+                    },
+                    {
+                        name: "Altele",
+                        products: ["Spirt", "Pasta De Dinti", "Servetele Bucatarie", "Hartie Igienica", "Lavete", "Saci Gunoi", "Bureti Vase", "Fairy", "Lumanare", "Servetele in cutie"].map(p => ({name: p, excluded: false}))
+                    }
+                ],
+                shoppingCart: []
+            }
+        };
+
+        let settings = {
+            darkMode: false,
+            notifications: false,
+            location: false
+        };
+
+        // PWA Install
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            setTimeout(() => {
+                document.getElementById('installPrompt').classList.add('show');
+            }, 3000);
+        });
+
+        window.installApp = async function() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('installPrompt').classList.remove('show');
+            }
+        };
+
+        window.dismissInstallPrompt = function() {
+            document.getElementById('installPrompt').classList.remove('show');
+            localStorage.setItem('installPromptDismissed', 'true');
+        };
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {
+                console.log('Service Worker not available in this environment');
+            });
+        }
+
+        // Tab switching
+        window.switchTab = function(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            document.getElementById(`${tab}Tab`).style.display = 'block';
+            
+            const fab = document.getElementById('mainFab');
+            if (tab === 'products') {
+                fab.textContent = '+';
+                fab.onclick = () => openCategoryModal();
+            } else if (tab === 'lists') {
+                fab.textContent = '+';
+                fab.onclick = () => openListModal();
+            } else {
+                fab.textContent = '🛒';
+                fab.onclick = () => switchTab('shopping');
+            }
+        };
+
+        window.handleFabClick = function() {
+            if (currentTab === 'products') {
+                openCategoryModal();
+            } else if (currentTab === 'lists') {
+                openListModal();
+            }
+        };
+
+        // Render functions
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            const categories = lists[currentListId].categories;
+            
+            if (!categories || categories.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <div class="empty-state-text">Nicio categorie<br>Adaugă prima categorie</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            categories.forEach((category, catIndex) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'category-header';
+                
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'category-name';
+                const nameInput = document.createElement('input');
+                nameInput.value = category.name;
+                nameInput.onchange = (e) => updateCategoryName(catIndex, e.target.value);
+                nameDiv.appendChild(nameInput);
+                
+                const controlsDiv = document.createElement('div');
+                controlsDiv.className = 'category-controls';
+                
+                if (catIndex > 0) {
+                    const upBtn = document.createElement('button');
+                    upBtn.className = 'small-btn';
+                    upBtn.textContent = '↑';
+                    upBtn.onclick = () => moveCategory(catIndex, -1);
+                    controlsDiv.appendChild(upBtn);
+                }
+                
+                if (catIndex < categories.length - 1) {
+                    const downBtn = document.createElement('button');
+                    downBtn.className = 'small-btn';
+                    downBtn.textContent = '↓';
+                    downBtn.onclick = () => moveCategory(catIndex, 1);
+                    controlsDiv.appendChild(downBtn);
+                }
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'small-btn';
+                deleteBtn.textContent = '🗑️';
+                deleteBtn.onclick = () => deleteCategory(catIndex);
+                controlsDiv.appendChild(deleteBtn);
+                
+                headerDiv.appendChild(nameDiv);
+                headerDiv.appendChild(controlsDiv);
+                categoryDiv.appendChild(headerDiv);
+                
+                const productsDiv = document.createElement('div');
+                productsDiv.className = 'products-list';
+                
+                category.products.forEach((product, prodIndex) => {
+                    const productDiv = document.createElement('div');
+                    productDiv.className = 'product-item' + (product.excluded ? ' excluded' : '');
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'product-checkbox';
+                    const inCart = lists[currentListId].shoppingCart.some(item => 
+                        item.product === product.name && item.category === category.name
+                    );
+                    checkbox.checked = inCart;
+                    checkbox.onchange = (e) => toggleProduct(category.name, product.name, e.target.checked);
+                    
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'product-name';
+                    nameSpan.textContent = product.name;
+                    if (product.excluded) {
+                        nameSpan.textContent += ' 🚫';
+                    }
+                    
+                    const excludeBtn = document.createElement('button');
+                    excludeBtn.className = 'small-btn';
+                    excludeBtn.textContent = product.excluded ? '✓' : '🚫';
+                    excludeBtn.onclick = () => toggleExclude(catIndex, prodIndex);
+                    
+                    productDiv.appendChild(checkbox);
+                    productDiv.appendChild(nameSpan);
+                    productDiv.appendChild(excludeBtn);
+                    
+                    const deleteSwipe = document.createElement('div');
+                    deleteSwipe.className = 'delete-swipe';
+                    deleteSwipe.textContent = '🗑️';
+                    deleteSwipe.onclick = () => deleteProduct(catIndex, prodIndex);
+                    productDiv.appendChild(deleteSwipe);
+                    
+                    // Swipe gesture
+                    let startX = 0;
+                    productDiv.addEventListener('touchstart', (e) => {
+                        startX = e.touches[0].clientX;
+                    });
+                    
+                    productDiv.addEventListener('touchmove', (e) => {
+                        const currentX = e.touches[0].clientX;
+                        const diff = startX - currentX;
+                        if (diff > 50) {
+                            productDiv.classList.add('swiped');
+                        } else if (diff < -50) {
+                            productDiv.classList.remove('swiped');
+                        }
+                    });
+                    
+                    productsDiv.appendChild(productDiv);
+                });
+                
+                const addBtn = document.createElement('button');
+                addBtn.className = 'btn btn-secondary';
+                addBtn.textContent = '+ Adaugă Produs';
+                addBtn.onclick = () => openProductModal(catIndex);
+                productsDiv.appendChild(addBtn);
+                
+                categoryDiv.appendChild(productsDiv);
+                container.appendChild(categoryDiv);
+            });
+            
+            updateStats();
+            saveData();
+        }
+
+        function renderShoppingList() {
+            const container = document.getElementById('shoppingList');
+            const cart = lists[currentListId].shoppingCart;
+            
+            if (!cart || cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🛍️</div>
+                        <div class="empty-state-text">Lista ta de cumpărături este goală<br>Selectează produse din tab-ul Produse</div>
+                    </div>
+                `;
+                updateShoppingStats();
+                return;
+            }
+
+            container.innerHTML = '';
+            
+            // Group by store
+            const grouped = {};
+            cart.forEach(item => {
+                const store = item.store || 'Fără magazin';
+                if (!grouped[store]) grouped[store] = [];
+                grouped[store].push(item);
+            });
+
+            Object.keys(grouped).forEach(store => {
+                const storeDiv = document.createElement('div');
+                storeDiv.className = 'store-section';
+                
+                const header = document.createElement('div');
+                header.className = 'store-header';
+                header.textContent = `${store} (${grouped[store].length})`;
+                storeDiv.appendChild(header);
+                
+                grouped[store].forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'shopping-item' + (item.purchased ? ' purchased' : '');
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'product-checkbox';
+                    checkbox.checked = item.purchased;
+                    checkbox.onchange = (e) => {
+                        item.purchased = e.target.checked;
+                        renderShoppingList();
+                        saveData();
+                    };
+                    
+                    const category = document.createElement('span');
+                    category.className = 'shopping-item-category';
+                    category.textContent = item.category;
+                    
+                    const name = document.createElement('span');
+                    name.className = 'shopping-item-name';
+                    name.textContent = item.product;
+                    if (item.quantity > 1) {
+                        name.textContent += ` (${item.quantity})`;
+                    }
+                    
+                    const qtyControls = document.createElement('div');
+                    qtyControls.className = 'quantity-controls';
+                    
+                    const minusBtn = document.createElement('button');
+                    minusBtn.className = 'qty-btn';
+                    minusBtn.textContent = '-';
+                    minusBtn.onclick = () => {
+                        if (item.quantity > 1) {
+                            item.quantity--;
+                            renderShoppingList();
+                            saveData();
+                        }
+                    };
+                    
+                    const qtyDisplay = document.createElement('span');
+                    qtyDisplay.className = 'qty-display';
+                    qtyDisplay.textContent = item.quantity || 1;
+                    
+                    const plusBtn = document.createElement('button');
+                    plusBtn.className = 'qty-btn';
+                    plusBtn.textContent = '+';
+                    plusBtn.onclick = () => {
+                        item.quantity = (item.quantity || 1) + 1;
+                        renderShoppingList();
+                        saveData();
+                    };
+                    
+                    qtyControls.appendChild(minusBtn);
+                    qtyControls.appendChild(qtyDisplay);
+                    qtyControls.appendChild(plusBtn);
+                    
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(category);
+                    itemDiv.appendChild(name);
+                    itemDiv.appendChild(qtyControls);
+                    
+                    storeDiv.appendChild(itemDiv);
+                });
+                
+                container.appendChild(storeDiv);
+            });
+
+            updateShoppingStats();
+        }
+
+        function renderLists() {
+            const container = document.getElementById('listsContainer');
+            container.innerHTML = '';
+            
+            Object.keys(lists).forEach(listId => {
+                const list = lists[listId];
+                const card = document.createElement('div');
+                card.className = 'list-card' + (listId === currentListId ? ' active' : '');
+                card.onclick = () => switchToList(listId);
+                
+                const header = document.createElement('div');
+                header.className = 'list-card-header';
+                
+                const title = document.createElement('div');
+                title.className = 'list-card-title';
+                title.textContent = list.name;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'small-btn';
+                deleteBtn.textContent = '🗑️';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deleteList(listId);
+                };
+                
+                header.appendChild(title);
+                if (listId !== 'default') {
+                    header.appendChild(deleteBtn);
+                }
+                
+                const stats = document.createElement('div');
+                stats.className = 'list-card-stats';
+                const itemCount = list.shoppingCart?.length || 0;
+                const categoryCount = list.categories?.length || 0;
+                stats.textContent = `${itemCount} produse în listă • ${categoryCount} categorii`;
+                
+                card.appendChild(header);
+                card.appendChild(stats);
+                container.appendChild(card);
+            });
+        }
+
+        function updateStats() {
+            const categories = lists[currentListId].categories || [];
+            let totalProducts = 0;
+            let excludedCount = 0;
+            
+            categories.forEach(cat => {
+                totalProducts += cat.products.length;
+                excludedCount += cat.products.filter(p => p.excluded).length;
+            });
+            
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('categoriesCount').textContent = categories.length;
+            document.getElementById('excludedCount').textContent = excludedCount;
+        }
+
+        function updateShoppingStats() {
+            const cart = lists[currentListId].shoppingCart || [];
+            const purchased = cart.filter(item => item.purchased).length;
+            
+            document.getElementById('totalItems').textContent = cart.length;
+            document.getElementById('purchasedItems').textContent = purchased;
+            document.getElementById('remainingItems').textContent = cart.length - purchased;
+            document.getElementById('cartBadge').textContent = cart.length;
+        }
+
+        // Product management
+        window.toggleProduct = function(categoryName, productName, isChecked) {
+            const cart = lists[currentListId].shoppingCart;
+            const index = cart.findIndex(item => 
+                item.product === productName && item.category === categoryName
+            );
+            
+            if (isChecked && index === -1) {
+                cart.push({
+                    category: categoryName,
+                    product: productName,
+                    store: '',
+                    quantity: 1,
+                    purchased: false
+                });
+            } else if (!isChecked && index !== -1) {
+                cart.splice(index, 1);
+            }
+            
+            renderShoppingList();
+            updateShoppingStats();
+            saveData();
+        };
+
+        window.toggleExclude = function(catIndex, prodIndex) {
+            const product = lists[currentListId].categories[catIndex].products[prodIndex];
+            product.excluded = !product.excluded;
+            renderCategories();
+            saveData();
+        };
+
+        window.deleteProduct = function(catIndex, prodIndex) {
+            if (confirm('Ștergi acest produs permanent?')) {
+                const product = lists[currentListId].categories[catIndex].products[prodIndex];
+                const categoryName = lists[currentListId].categories[catIndex].name;
+                
+                lists[currentListId].categories[catIndex].products.splice(prodIndex, 1);
+                lists[currentListId].shoppingCart = lists[currentListId].shoppingCart.filter(item => 
+                    !(item.product === product.name && item.category === categoryName)
+                );
+                
+                renderCategories();
+                renderShoppingList();
+                saveData();
+            }
+        };
+
+        window.deleteCategory = function(catIndex) {
+            if (confirm('Ștergi această categorie și toate produsele?')) {
+                const categoryName = lists[currentListId].categories[catIndex].name;
+                lists[currentListId].shoppingCart = lists[currentListId].shoppingCart.filter(
+                    item => item.category !== categoryName
+                );
+                lists[currentListId].categories.splice(catIndex, 1);
+                renderCategories();
+                renderShoppingList();
+                saveData();
+            }
+        };
+
+        window.moveCategory = function(catIndex, direction) {
+            const categories = lists[currentListId].categories;
+            const newIndex = catIndex + direction;
+            if (newIndex >= 0 && newIndex < categories.length) {
+                [categories[catIndex], categories[newIndex]] = [categories[newIndex], categories[catIndex]];
+                renderCategories();
+                saveData();
+            }
+        };
+
+        window.updateCategoryName = function(catIndex, newName) {
+            const oldName = lists[currentListId].categories[catIndex].name;
+            lists[currentListId].categories[catIndex].name = newName;
+            
+            lists[currentListId].shoppingCart.forEach(item => {
+                if (item.category === oldName) item.category = newName;
+            });
+            
+            renderShoppingList();
+            saveData();
+        };
+
+        // Modal functions
+        window.openProductModal = function(catIndex) {
+            const modal = document.getElementById('productModal');
+            const select = document.getElementById('productCategory');
+            select.innerHTML = '';
+            
+            lists[currentListId].categories.forEach((cat, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = cat.name;
+                if (index === catIndex) option.selected = true;
+                select.appendChild(option);
+            });
+            
+            modal.classList.add('active');
+        };
+
+        window.closeProductModal = function() {
+            document.getElementById('productModal').classList.remove('active');
+            document.getElementById('productName').value = '';
+        };
+
+        window.addNewProduct = function() {
+            const name = document.getElementById('productName').value.trim();
+            const catIndex = parseInt(document.getElementById('productCategory').value);
+            
+            if (name) {
+                lists[currentListId].categories[catIndex].products.push({
+                    name: name,
+                    excluded: false
+                });
+                renderCategories();
+                closeProductModal();
+                saveData();
+            }
+        };
+
+        window.openCategoryModal = function() {
+            document.getElementById('categoryModal').classList.add('active');
+        };
+
+        window.closeCategoryModal = function() {
+            document.getElementById('categoryModal').classList.remove('active');
+            document.getElementById('categoryName').value = '';
+        };
+
+        window.addNewCategory = function() {
+            const name = document.getElementById('categoryName').value.trim();
+            if (name) {
+                lists[currentListId].categories.push({
+                    name: name,
+                    products: []
+                });
+                renderCategories();
+                closeCategoryModal();
+                saveData();
+            }
+        };
+
+        window.openListModal = function() {
+            document.getElementById('listModal').classList.add('active');
+        };
+
+        window.closeListModal = function() {
+            document.getElementById('listModal').classList.remove('active');
+            document.getElementById('listName').value = '';
+        };
+
+        window.createNewList = function() {
+            const name = document.getElementById('listName').value.trim();
+            if (name) {
+                const id = Date.now().toString();
+                lists[id] = {
+                    name: name,
+                    categories: [],
+                    shoppingCart: []
+                };
+                renderLists();
+                closeListModal();
+                saveData();
+            }
+        };
+
+        window.switchToList = function(listId) {
+            currentListId = listId;
+            document.getElementById('currentListName').textContent = lists[listId].name;
+            renderCategories();
+            renderShoppingList();
+            renderLists();
+            switchTab('products');
+        };
+
+        window.deleteList = function(listId) {
+            if (confirm('Ștergi această listă permanent?')) {
+                delete lists[listId];
+                if (currentListId === listId) {
+                    currentListId = 'default';
+                    document.getElementById('currentListName').textContent = lists.default.name;
+                }
+                renderLists();
+                saveData();
+            }
+        };
+
+        // Share functions
+        window.openShareModal = function() {
+            const listData = encodeURIComponent(JSON.stringify(lists[currentListId]));
+            const shareUrl = `${window.location.origin}${window.location.pathname}?list=${listData}`;
+            document.getElementById('shareLink').value = shareUrl;
+            document.getElementById('shareModal').classList.add('active');
+        };
+
+        window.closeShareModal = function() {
+            document.getElementById('shareModal').classList.remove('active');
+        };
+
+        window.copyShareLink = function() {
+            const input = document.getElementById('shareLink');
+            input.select();
+            document.execCommand('copy');
+            alert('Link copiat! 📋');
+        };
+
+        window.shareViaWhatsApp = function() {
+            const link = document.getElementById('shareLink').value;
+            const message = `Vezi lista mea de cumpărături: ${link}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        };
+
+        window.shareViaEmail = function() {
+            const link = document.getElementById('shareLink').value;
+            const subject = `Lista de Cumpărături: ${lists[currentListId].name}`;
+            const body = `Vezi lista mea de cumpărături:\n\n${link}`;
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        };
+
+        window.shareViaNative = async function() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: lists[currentListId].name,
+                        text: 'Vezi lista mea de cumpărături',
+                        url: document.getElementById('shareLink').value
+                    });
+                } catch (err) {
+                    console.log('Share cancelled');
+                }
+            } else {
+                copyShareLink();
+            }
+        };
+
+        window.exportToJSON = function() {
+            const dataStr = JSON.stringify(lists[currentListId], null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `lista-${lists[currentListId].name}-${Date.now()}.json`;
+            link.click();
+        };
+
+        window.importFromJSON = function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        const id = Date.now().toString();
+                        lists[id] = imported;
+                        renderLists();
+                        saveData();
+                        alert('Listă importată cu succes! ✅');
+                    } catch (err) {
+                        alert('Eroare la import! Verifică fișierul.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        };
+
+        // Settings
+        window.openSettingsModal = function() {
+            document.getElementById('settingsModal').classList.add('active');
+            document.getElementById('darkModeToggle').checked = settings.darkMode;
+            document.getElementById('notificationsToggle').checked = settings.notifications;
+            document.getElementById('locationToggle').checked = settings.location;
+        };
+
+        window.closeSettingsModal = function() {
+            document.getElementById('settingsModal').classList.remove('active');
+        };
+
+        window.toggleDarkMode = function() {
+            settings.darkMode = document.getElementById('darkModeToggle').checked;
+            document.documentElement.setAttribute('data-theme', settings.darkMode ? 'dark' : 'light');
+            saveSettings();
+        };
+
+        window.toggleNotifications = async function() {
+            settings.notifications = document.getElementById('notificationsToggle').checked;
+            if (settings.notifications && 'Notification' in window) {
+                const permission = await Notification.requestPermission();
+                settings.notifications = permission === 'granted';
+                document.getElementById('notificationsToggle').checked = settings.notifications;
+            }
+            saveSettings();
+        };
+
+        window.toggleLocation = async function() {
+            settings.location = document.getElementById('locationToggle').checked;
+            if (settings.location && 'geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    () => { saveSettings(); },
+                    () => { 
+                        settings.location = false;
+                        document.getElementById('locationToggle').checked = false;
+                        alert('Nu am putut accesa locația');
+                    }
+                );
+            } else {
+                saveSettings();
+            }
+        };
+
+        window.clearAllData = function() {
+            if (confirm('Ștergi TOATE datele? Această acțiune nu poate fi anulată!')) {
+                localStorage.clear();
+                location.reload();
+            }
+        };
+
+        // Storage
+        function saveData() {
+            localStorage.setItem('shoppingLists', JSON.stringify(lists));
+            localStorage.setItem('currentListId', currentListId);
+            
+            if (useFirebase && database) {
+                const listRef = ref(database, `lists/${currentListId}`);
+                set(listRef, lists[currentListId]);
+            }
+        }
+
+        function saveSettings() {
+            localStorage.setItem('settings', JSON.stringify(settings));
+        }
+
+        function loadData() {
+            const savedLists = localStorage.getItem('shoppingLists');
+            const savedListId = localStorage.getItem('currentListId');
+            const savedSettings = localStorage.getItem('settings');
+            
+            if (savedLists) lists = JSON.parse(savedLists);
+            if (savedListId) currentListId = savedListId;
+            if (savedSettings) {
+                settings = JSON.parse(savedSettings);
+                document.documentElement.setAttribute('data-theme', settings.darkMode ? 'dark' : 'light');
+            }
+            
+            // Check for shared list in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sharedList = urlParams.get('list');
+            if (sharedList) {
+                try {
+                    const imported = JSON.parse(decodeURIComponent(sharedList));
+                    const id = Date.now().toString();
+                    lists[id] = imported;
+                    currentListId = id;
+                    saveData();
+                    window.history.replaceState({}, '', window.location.pathname);
+                } catch (err) {
+                    console.log('Invalid shared list');
+                }
+            }
+            
+            document.getElementById('currentListName').textContent = lists[currentListId].name;
+        }
+
+        // Initialize
+        loadData();
+        renderCategories();
+        renderShoppingList();
+        renderLists();
+    </script>
+</body>
+</html>
