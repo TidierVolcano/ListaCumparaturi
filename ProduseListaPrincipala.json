@@ -1,0 +1,1539 @@
+{
+  "listName": "Lista Principală",
+  "exportDate": "2026-02-14T14:48:52.086Z",
+  "categories": [
+    {
+      "name": "Fructe si Legume",
+      "products": [
+        {
+          "name": "Mango",
+          "price": 8.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Zmeura",
+          "price": 14.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Afine",
+          "price": 12,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ananas",
+          "price": 8.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Avocado",
+          "price": 5.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Kiwi",
+          "price": 13,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Clementine",
+          "price": 4.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Portocale",
+          "price": 6.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Lamai",
+          "price": 5.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Banane",
+          "price": 6.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Mere Bio",
+          "price": 9.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ardei iuti",
+          "price": 9.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Rosii Cherry",
+          "price": 9.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Castraveti",
+          "price": 2.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Dovlecel",
+          "price": 6.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Zucchini",
+          "price": 9.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Vinete",
+          "price": 13.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ardei capia rosu",
+          "price": 13.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Busuioc proaspat",
+          "price": 5.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Marar verde",
+          "price": 1.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Patrunjel verde",
+          "price": 1.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Salata",
+          "price": 5.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Morcovi",
+          "price": 2.8,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Praz",
+          "price": 6.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Apio",
+          "price": 6.29,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Brocoli",
+          "price": 8.29,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Usturoi",
+          "price": 17.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Telina",
+          "price": 3.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Patrunjel radacina",
+          "price": 6.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pastarnac radacina",
+          "price": 3.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sfecla Bio",
+          "price": 5.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cartofi dulci",
+          "price": 0,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cartofi",
+          "price": 1.04,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cartofi Gourmet",
+          "price": 9.99,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ceapa",
+          "price": 1.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Bacanie & Conserve",
+      "products": [
+        {
+          "name": "Conserva Fasole rosie",
+          "price": 3.45,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Fasole alba",
+          "price": 3.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Naut",
+          "price": 0.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Mazare",
+          "price": 8.69,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva porumb",
+          "price": 9.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva ciuperci",
+          "price": 6.35,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Pasta tomate",
+          "price": 6.09,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Rosii",
+          "price": 4.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Rosii cubulete",
+          "price": 4.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Rosii intregi",
+          "price": 4.59,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ulei de cocos",
+          "price": 11.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Lapte de cocos",
+          "price": 4.06,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Castraveti murati",
+          "price": 8.05,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Gogosari murati",
+          "price": 6.29,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva Ardei iuti murati",
+          "price": 5.38,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Conserva ton",
+          "price": 9.65,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cafea",
+          "price": 90,
+          "store": "Online",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ceai",
+          "price": 8.5,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Faina 650",
+          "price": 1.98,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Faina integrala",
+          "price": 2.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Faina cozonac",
+          "price": 2.25,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Malai Extra",
+          "price": 3.79,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Zahar",
+          "price": 4.2,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Zahar brun",
+          "price": 4.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Smantana lichida",
+          "price": 5.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Boia afumata",
+          "price": 1.59,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Drojdie uscata",
+          "price": 1.89,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Praf de copt",
+          "price": 0.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Bicarbonat",
+          "price": 1.98,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Miez nuca",
+          "price": 14.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Seminte mixte",
+          "price": 14.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Arahide",
+          "price": 5.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ulei",
+          "price": 9,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Otet",
+          "price": 4.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Linte",
+          "price": 20.5,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Orez Basmati",
+          "price": 11.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Paste tagliatelle",
+          "price": 13,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Paste fainoase",
+          "price": 6,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sos de soia",
+          "price": 5.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sare",
+          "price": 7.45,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Maioneza",
+          "price": 28,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ulei masline",
+          "price": 60,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Miere",
+          "price": 9,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pesto busuioc",
+          "price": 4.99,
+          "store": "Pasticerie",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Carne si Peste",
+      "products": [
+        {
+          "name": "Aripi pui",
+          "price": 19.9,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Piept pui",
+          "price": 31.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pulpe pui dezosate",
+          "price": 31.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pulpe pui",
+          "price": 21.3,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ceafa porc",
+          "price": 27.9,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cotlet de porc",
+          "price": 27.9,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Carne tocata mix",
+          "price": 24.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Burta vita",
+          "price": 25.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pate porc",
+          "price": 6.75,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Salata icre",
+          "price": 99.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Fructe de mare",
+          "price": 19.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sardine (conserve)",
+          "price": 4.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Somon",
+          "price": 125,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ton",
+          "price": 107,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pastrav",
+          "price": 0,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Creveti proaspeti",
+          "price": 50,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Lactate si Oua",
+      "products": [
+        {
+          "name": "Lapte",
+          "price": 9.15,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Iaurt",
+          "price": 1.85,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Smantana",
+          "price": 5.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Unt 82%",
+          "price": 12.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Kefir",
+          "price": 2.69,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Mozzarella",
+          "price": 4.45,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Parmigiano",
+          "price": 23.19,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Crema branza",
+          "price": 6.49,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Mascarpone",
+          "price": 9.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ricotta",
+          "price": 9,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Branza de vaci",
+          "price": 21,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cheddar",
+          "price": 14.79,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Oua M Sol",
+          "price": 14.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Tofu Bio",
+          "price": 4.35,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Branza cu mucegai",
+          "price": 8.65,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Bulgarasi de branza",
+          "price": 14.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Branza Brie",
+          "price": 8.65,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Non-Food",
+      "products": [
+        {
+          "name": "Hartie igienica",
+          "price": 12.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Servetele de masa",
+          "price": 3.29,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Hartie copt",
+          "price": 5.95,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Laveta",
+          "price": 3.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Bureti vase",
+          "price": 3.95,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Prosop bucatarie",
+          "price": 12.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pastile MSV",
+          "price": 31.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Tablete MSV",
+          "price": 30.95,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Lichid limpezire MSV",
+          "price": 0,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sare MSV",
+          "price": 5.45,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Folie alimentara",
+          "price": 5.95,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Folie Aluminiu",
+          "price": 8.79,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Baterii",
+          "price": 24.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Saci menajeri",
+          "price": 3.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Lumanari",
+          "price": 2.79,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Chibrituri",
+          "price": 1.69,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pasta de dinti adulti",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pasta de dinti copii",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Periuta de dinti adulti",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Periuta de dinti copii",
+          "price": 26.95,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Apa de gura",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ata dentara",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sampon barbati",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Gel de dus barbati",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Masca de par",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sampon femei",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Deodorant",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Servetele cosmetice",
+          "price": 3.29,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Servetele umede",
+          "price": 5.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Dischete demachiante",
+          "price": 6.95,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Absorbante",
+          "price": 0,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Vata",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Spirt",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Solutie scos pete",
+          "price": 14.89,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Pudra indepartare pete",
+          "price": 14.95,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Solutie pentru geamuri",
+          "price": 14.99,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Dezinfectant baie",
+          "price": 12.45,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "deodorant toaleta",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Solutie parchet",
+          "price": 17.95,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Solutie baie",
+          "price": 0,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Solutie din otet de zmeura",
+          "price": 13.45,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Inalbitor Ace",
+          "price": 11.49,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Domestos",
+          "price": 19.99,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cif",
+          "price": 18.99,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Sapun lichid",
+          "price": 50.49,
+          "store": "Online",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Solutie desfundat tevi",
+          "price": 6.99,
+          "store": "DM",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Hrana pisici Purina",
+          "price": 43.19,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Termoprotectie parbriz",
+          "price": 11.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Congelate",
+      "products": [
+        {
+          "name": "Spanac",
+          "price": 3.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Mazare",
+          "price": 8.69,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Edamame",
+          "price": 6.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Fasole verde",
+          "price": 3.99,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Legume mixte",
+          "price": 4.05,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Creveti congelate",
+          "price": 18.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Scoici congelate",
+          "price": 16.5,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Fructe congelate",
+          "price": 0,
+          "store": "Kaufland",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Bauturi",
+      "products": [
+        {
+          "name": "Apa minerala",
+          "price": 3,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Prosecco",
+          "price": 35,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Bere",
+          "price": 25,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Vin rosu",
+          "price": 35,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Vin alb",
+          "price": 35,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Online",
+      "products": [
+        {
+          "name": "Drojdie inactiva",
+          "price": 36.41,
+          "store": "BioMarket",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Granola",
+          "price": 22.16,
+          "store": "BioMarket",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Linte",
+          "price": 20.5,
+          "store": "BioMarket",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Condimente",
+          "price": 0,
+          "store": "BioMarket",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Unt de arahide",
+          "price": 7.03,
+          "store": "BioMarket",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Detergent rufe",
+          "price": 169,
+          "store": "BioMarket",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    },
+    {
+      "name": "Butcher",
+      "products": [
+        {
+          "name": "Piept de curcan",
+          "price": 0,
+          "store": "Butcher",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Piept de pui",
+          "price": 0,
+          "store": "Butcher",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Ceafa de porc",
+          "price": 0,
+          "store": "Butcher",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Rasol vita",
+          "price": 0,
+          "store": "Butcher",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Cotlet berbecut",
+          "price": 0,
+          "store": "Butcher",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Carnati",
+          "price": 0,
+          "store": "Butcher",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Supa de oase",
+          "price": 0,
+          "store": "Butcher",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        }
+      ]
+    }
+  ]
+}
