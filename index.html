@@ -1341,10 +1341,6 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="icon-btn" onclick="openAISuggestions()" title="AI Sugestii">
-                        🤖
-                        <span class="badge-dot" id="aiNotification" style="display: none;"></span>
-                    </button>
                     <button class="icon-btn" onclick="exportToPDF()" title="Export PDF">📄</button>
                     <button class="icon-btn" onclick="shareShoppingList()" title="Distribuie Lista" id="shareBtn">📤</button>
                     <button class="icon-btn" onclick="openSettingsModal()" title="Setări">⚙️</button>
@@ -1370,6 +1366,7 @@
                 <div class="search-wrapper">
                     <span class="search-icon">🔍</span>
                     <input type="text" id="searchInput" class="search-bar" placeholder="Caută produse..." oninput="searchProducts()">
+                    <button id="searchClearBtn" onclick="clearSearch()" style="display:none; position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-secondary); font-size:1.3em; cursor:pointer; line-height:1; padding:0 4px;">×</button>
                 </div>
             </div>
         </div>
@@ -1378,16 +1375,6 @@
             <!-- Tab Produse -->
             <div id="productsTab" class="tab-content">
                 <!-- AI Suggestions -->
-                <div id="aiSuggestionsPanel" class="ai-suggestions" style="display: none;">
-                    <div class="ai-header">
-                        <div class="ai-icon">🤖</div>
-                        <div>
-                            <div class="ai-title">Sugestii AI</div>
-                            <div style="font-size: 0.85em; opacity: 0.9;">Bazat pe istoricul tău</div>
-                        </div>
-                    </div>
-                    <div class="suggestion-chips" id="suggestionChips"></div>
-                </div>
 
                 <div id="categoriesContainer"></div>
             </div>
@@ -1730,6 +1717,18 @@
         window.searchProducts = function() {
             const input = document.getElementById('searchInput');
             searchQuery = input.value.toLowerCase().trim();
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (clearBtn) clearBtn.style.display = searchQuery ? 'block' : 'none';
+            renderCategories();
+        };
+
+        window.clearSearch = function() {
+            const input = document.getElementById('searchInput');
+            input.value = '';
+            searchQuery = '';
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (clearBtn) clearBtn.style.display = 'none';
+            input.focus();
             renderCategories();
         };
 
@@ -2292,6 +2291,15 @@
             let totalValue = 0;
 
             categories.forEach((category, catIndex) => {
+                
+                // When searching, check if any product in this category matches
+                const matchingProducts = searchQuery
+                    ? category.products.filter(p => p.name.toLowerCase().includes(searchQuery))
+                    : category.products;
+                
+                // If searching and no products match, skip the entire category
+                if (searchQuery && matchingProducts.length === 0) return;
+                
                 const categoryDiv = document.createElement('div');
                 categoryDiv.className = 'category';
                 
@@ -2366,11 +2374,14 @@
                     productsDiv.appendChild(productDiv);
                 });
                 
-                const addBtn = document.createElement('button');
-                addBtn.className = 'btn btn-secondary';
-                addBtn.textContent = '+ Adaugă Produs';
-                addBtn.onclick = () => openProductModal(catIndex);
-                productsDiv.appendChild(addBtn);
+                // Only show "Adaugă Produs" button when not searching
+                if (!searchQuery) {
+                    const addBtn = document.createElement('button');
+                    addBtn.className = 'btn btn-secondary';
+                    addBtn.textContent = '+ Adaugă Produs';
+                    addBtn.onclick = () => openProductModal(catIndex);
+                    productsDiv.appendChild(addBtn);
+                }
                 
                 categoryDiv.appendChild(headerDiv);
                 categoryDiv.appendChild(productsDiv);
