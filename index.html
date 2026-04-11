@@ -1595,6 +1595,7 @@
                 <button class="btn btn-primary" onclick="exportProducts()">📋 Export Lista Produse</button>
                 <button class="btn btn-primary" onclick="importProducts()">📋 Import Lista Produse</button>
                 <button class="btn btn-secondary" onclick="clearHistory()">🗑️ Șterge Istoric</button>
+                <button class="btn btn-primary" onclick="resetFromGitHub()" style="background: linear-gradient(135deg, #24292e, #404448); margin-top: 5px;">🔄 Reset GitHub</button>
             </div>
         </div>
     </div>
@@ -3939,6 +3940,74 @@
             
             alert(message);
         }
+
+        // ==================== RESET FROM GITHUB ====================
+        window.resetFromGitHub = async function() {
+            const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/TidierVolcano/ListaCumparaturi/main/ProduseListaPrincipala.json';
+            
+            const confirmed = confirm(
+                '🔄 Reset din GitHub\n\n' +
+                'Această acțiune va înlocui TOATE categoriile și produsele cu versiunea din GitHub.\n\n' +
+                '⚠️ Lista de cumpărături curentă va fi PĂSTRATĂ.\n' +
+                '⚠️ Produsele adăugate manual vor fi ȘTERSE dacă nu există în GitHub.\n\n' +
+                'Continui?'
+            );
+            if (!confirmed) return;
+
+            const btn = document.querySelector('[onclick="resetFromGitHub()"]');
+            const originalText = btn ? btn.innerHTML : '';
+            if (btn) { btn.innerHTML = '⏳ Se descarcă...'; btn.disabled = true; }
+
+            try {
+                const response = await fetch(GITHUB_RAW_URL + '?t=' + Date.now());
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                const imported = await response.json();
+                if (!imported.categories || !Array.isArray(imported.categories)) {
+                    throw new Error('Format JSON invalid - lipsesc categoriile');
+                }
+
+                const currentCart = lists[currentListId].shoppingCart || [];
+                lists[currentListId].categories = imported.categories.map(cat => ({
+                    name: cat.name,
+                    products: (cat.products || []).map(p => ({
+                        name: p.name,
+                        price: p.price || 0,
+                        store: p.store || '',
+                        barcode: p.barcode || '',
+                        quantity: p.quantity || 1,
+                        excluded: p.excluded || false
+                    }))
+                }));
+
+                // Keep only cart items whose products still exist after reset
+                lists[currentListId].shoppingCart = currentCart.filter(cartItem =>
+                    lists[currentListId].categories.some(cat =>
+                        cat.name === cartItem.category &&
+                        cat.products.some(p => p.name === cartItem.product)
+                    )
+                );
+
+                saveData();
+                renderCategories();
+                renderShoppingList();
+                updateStats();
+
+                const totalProducts = lists[currentListId].categories.reduce(
+                    (sum, cat) => sum + cat.products.length, 0
+                );
+                alert(
+                    '✅ Reset complet din GitHub!\n\n' +
+                    '📁 ' + lists[currentListId].categories.length + ' categorii importate\n' +
+                    '📦 ' + totalProducts + ' produse importate\n\n' +
+                    'Lista este acum sincronizată cu GitHub.'
+                );
+            } catch (error) {
+                console.error('GitHub reset error:', error);
+                alert('❌ Eroare la descărcarea din GitHub!\n\n' + error.message + '\n\nVerifică conexiunea la internet și încearcă din nou.');
+            } finally {
+                if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
+            }
+        };
 
         // ==================== INITIALIZATION ====================
         loadData();
