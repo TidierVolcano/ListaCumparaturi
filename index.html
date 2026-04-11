@@ -2776,29 +2776,40 @@
                 displayCart = cart.filter(item => item.store === selectedStoreFilter);
             }
             
-            // Group by store
+            // Group by category, preserving the original category order
+            const categoryOrder = lists[currentListId].categories.map(c => c.name);
             const grouped = {};
             displayCart.forEach(item => {
-                const store = item.store || 'Fără magazin';
-                if (!grouped[store]) grouped[store] = [];
-                grouped[store].push(item);
+                const cat = item.category || 'Fără categorie';
+                if (!grouped[cat]) grouped[cat] = [];
+                grouped[cat].push(item);
             });
 
-            Object.keys(grouped).sort().forEach(store => {
-                const storeDiv = document.createElement('div');
-                storeDiv.className = 'store-section';
+            // Sort groups by original category order, unknown categories at end
+            const sortedGroups = Object.keys(grouped).sort((a, b) => {
+                const ia = categoryOrder.indexOf(a);
+                const ib = categoryOrder.indexOf(b);
+                if (ia === -1 && ib === -1) return a.localeCompare(b);
+                if (ia === -1) return 1;
+                if (ib === -1) return -1;
+                return ia - ib;
+            });
+
+            sortedGroups.forEach(cat => {
+                const catDiv = document.createElement('div');
+                catDiv.className = 'store-section';
                 
-                let storeTotal = 0;
-                grouped[store].forEach(item => {
-                    storeTotal += (item.price || 0) * (item.quantity || 1);
+                let catTotal = 0;
+                grouped[cat].forEach(item => {
+                    catTotal += (item.price || 0) * (item.quantity || 1);
                 });
                 
                 const header = document.createElement('div');
                 header.className = 'store-header';
-                header.textContent = `${store} (${grouped[store].length} prod.)${settings.showPrices ? ` • ${storeTotal.toFixed(2)} lei` : ''}`;
-                storeDiv.appendChild(header);
+                header.textContent = `${cat} (${grouped[cat].length} prod.)${settings.showPrices ? ` • ${catTotal.toFixed(2)} lei` : ''}`;
+                catDiv.appendChild(header);
                 
-                grouped[store].forEach((item, idx) => {
+                grouped[cat].forEach((item) => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'shopping-item' + (item.purchased ? ' purchased' : '');
                     
@@ -2812,9 +2823,7 @@
                         <div class="shopping-item-details">
                             <div class="shopping-item-name">${item.product}</div>
                             <div class="shopping-item-meta">
-                                <span class="meta-tag" style="background: rgba(102, 126, 234, 0.1); color: var(--primary);">
-                                    ${item.category}
-                                </span>
+                                ${item.store ? `<span class="meta-tag" style="background: rgba(33, 150, 243, 0.1); color: var(--info);">${item.store}</span>` : ''}
                                 ${settings.showPrices && item.price ? 
                                     `<span class="meta-tag" style="background: rgba(76, 175, 80, 0.1); color: var(--success);">
                                         ${((item.price || 0) * (item.quantity || 1)).toFixed(2)} lei
@@ -2828,10 +2837,10 @@
                         </div>
                     `;
                     
-                    storeDiv.appendChild(itemDiv);
+                    catDiv.appendChild(itemDiv);
                 });
                 
-                container.appendChild(storeDiv);
+                container.appendChild(catDiv);
             });
 
             updateShoppingStats();
