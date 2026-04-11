@@ -1,6 +1,6 @@
 {
   "listName": "Lista Principală",
-  "exportDate": "2026-02-14T14:48:52.086Z",
+  "exportDate": "2026-04-11T06:11:37.606Z",
   "categories": [
     {
       "name": "Fructe si Legume",
@@ -915,6 +915,14 @@
           "barcode": "",
           "quantity": 1,
           "excluded": false
+        },
+        {
+          "name": "Branza",
+          "price": 0,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
         }
       ]
     },
@@ -1304,6 +1312,22 @@
           "barcode": "",
           "quantity": 1,
           "excluded": false
+        },
+        {
+          "name": "Lumanare aniversare",
+          "price": 0,
+          "store": "Mega Image",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Flori",
+          "price": 0,
+          "store": "Lidl",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
         }
       ]
     },
@@ -1370,6 +1394,14 @@
           "name": "Fructe congelate",
           "price": 0,
           "store": "Kaufland",
+          "barcode": "",
+          "quantity": 1,
+          "excluded": false
+        },
+        {
+          "name": "Croasante congelate",
+          "price": 0,
+          "store": "Lidl",
           "barcode": "",
           "quantity": 1,
           "excluded": false
