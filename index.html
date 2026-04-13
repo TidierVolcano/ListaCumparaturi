@@ -175,16 +175,20 @@
         input:checked + .slider:before { transform:translateX(22px); }
         .badge { display:inline-block; padding:4px 8px; background:var(--primary); color:white; border-radius:12px; font-size:0.75em; font-weight:bold; margin-left:8px; }
         @media (max-width:768px) { .templates-grid{grid-template-columns:1fr} .stats-grid{grid-template-columns:1fr} }
-        /* iPhone 15 și ecrane mici: header pe două rânduri */
+        /* iOS / ecrane mici: totul pe o singura linie compacta */
         @media (max-width:480px) {
-            .header-left { flex-direction:column; align-items:flex-start; gap:8px; }
-            .header h1 { font-size:1.1em; }
-            .header-stats { gap:8px; }
-            .header-stat { min-width:50px; padding:5px 8px; }
-            .header-stat-number { font-size:1em; }
-            .header-stat-label { font-size:0.6em; }
-            .pro-badge { font-size:0.45em; }
-            .icon-btn { width:36px; height:36px; font-size:1.1em; }
+            .header { padding:10px 12px; padding-top:calc(10px + env(safe-area-inset-top)); }
+            .header-top { align-items:flex-end; gap:6px; margin-bottom:10px; }
+            .header-left { flex-direction:row; align-items:center; gap:6px; flex:1; min-width:0; overflow:hidden; }
+            .header h1 { font-size:0.95em; white-space:nowrap; gap:4px; flex-shrink:0; }
+            .pro-badge { display:none; }
+            .header-stats { gap:4px; flex-shrink:0; }
+            .header-stat { min-width:0; padding:3px 5px; border-radius:6px; }
+            .header-stat-number { font-size:0.8em; }
+            .header-stat-label { font-size:0.5em; margin-top:1px; }
+            .header-actions { display:flex; gap:5px; align-self:flex-end; flex-shrink:0; }
+            .icon-btn { width:30px; height:30px; font-size:0.95em; }
+            #resetSelectionHeaderBtn .reset-badge { font-size:0.45em; min-width:13px; height:13px; top:-3px; right:-3px; }
         }
         .history-item { background:var(--bg-secondary); border-radius:12px; padding:15px; margin-bottom:15px; border-left:4px solid var(--success); box-shadow:0 2px 5px var(--shadow); }
         .history-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid var(--border); }
