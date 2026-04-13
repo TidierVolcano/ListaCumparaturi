@@ -244,6 +244,48 @@
             flex-shrink: 0;
         }
         .save-history-btn:active { background:rgba(255,255,255,0.4); transform:scale(0.96); }
+        .save-history-btn--reset {
+            background: rgba(0,0,0,0.15);
+            border-color: rgba(255,255,255,0.3);
+            font-size: 0.88em;
+            padding: 10px 14px;
+        }
+        .save-history-actions { display:flex; gap:8px; flex-shrink:0; }
+        /* Bara de resetare selecție din tab-ul Produse */
+        .reset-selection-bar {
+            position: sticky;
+            bottom: calc(10px + env(safe-area-inset-bottom));
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin: 16px 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.45);
+            animation: slideUpBar 0.3s ease;
+            z-index: 50;
+        }
+        .reset-selection-info { display:flex; flex-direction:column; gap:3px; }
+        .reset-selection-count { font-size:1em; font-weight:bold; }
+        .reset-selection-total { font-size:0.85em; opacity:0.9; }
+        .reset-selection-btn {
+            background: rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: bold;
+            cursor: pointer;
+            touch-action: manipulation;
+            white-space: nowrap;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .reset-selection-btn:active { background:rgba(255,255,255,0.4); transform:scale(0.96); }
         .filter-tabs { display:flex; gap:10px; margin-bottom:20px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
         .filter-tabs::-webkit-scrollbar { display:none; }
         .filter-tab { padding:8px 16px; background:var(--bg-secondary); border:2px solid var(--border); border-radius:20px; cursor:pointer; white-space:nowrap; transition:all 0.3s; font-size:0.85em; touch-action:manipulation; }
@@ -973,6 +1015,21 @@
         updateStats();
         const deselectBtn = document.getElementById('deselectAllFabOption');
         if (deselectBtn) deselectBtn.style.display = (lists[currentListId].shoppingCart && lists[currentListId].shoppingCart.length > 0) ? 'flex' : 'none';
+
+        // Bara de resetare selecție — apare când cel puțin un produs e în coș
+        const cartCount = (lists[currentListId].shoppingCart || []).length;
+        if (cartCount > 0) {
+            const cartTotal = lists[currentListId].shoppingCart.reduce((s,i) => s + ((i.price||0)*(i.quantity||1)), 0);
+            const bar = document.createElement('div');
+            bar.className = 'reset-selection-bar';
+            bar.innerHTML = `
+                <div class="reset-selection-info">
+                    <div class="reset-selection-count">🛍️ ${cartCount} produs${cartCount === 1 ? '' : 'e'} selectate</div>
+                    ${settings.showPrices ? `<div class="reset-selection-total">💰 ${cartTotal.toFixed(2)} lei estimat</div>` : ''}
+                </div>
+                <button class="reset-selection-btn" onclick="deselectAllProducts()">↩️ Resetează</button>`;
+            container.appendChild(bar);
+        }
         saveData();
     }
 
@@ -1145,7 +1202,7 @@
     window.deselectAllProducts = function() {
         const cart = lists[currentListId].shoppingCart || [];
         if (cart.length === 0) return;
-        if (!confirm(`Deselectezi toate produsele (${cart.length})?`)) return;
+        if (!confirm(`Resetezi selecția?\n\n↩️ ${cart.length} produs${cart.length === 1 ? '' : 'e'} vor fi debifate și scoase din coș.\nProdusele rămân în lista de produse.`)) return;
         lists[currentListId].shoppingCart = [];
         saveData(); renderCategories(); renderShoppingList();
         const deselectBtn = document.getElementById('deselectAllFabOption');
@@ -1233,7 +1290,10 @@
                     <div class="save-history-count">✅ ${purchased.length} din ${cart.length} cumpărate</div>
                     ${settings.showPrices ? `<div class="save-history-total">💰 ${purchasedCost.toFixed(2)} lei</div>` : ''}
                 </div>
-                <button class="save-history-btn" onclick="completeShoppingTrip()">💾 Salvează în Istoric</button>`;
+                <div class="save-history-actions">
+                    <button class="save-history-btn save-history-btn--reset" onclick="resetPurchased()" title="Resetează selecția">↩️ Reset</button>
+                    <button class="save-history-btn" onclick="completeShoppingTrip()">💾 Salvează</button>
+                </div>`;
             container.appendChild(bar);
         }
 
@@ -1273,6 +1333,16 @@
         const item = lists[currentListId].shoppingCart[index];
         item.quantity = Math.max(1, (item.quantity||1) + delta);
         renderShoppingList(); saveData();
+    };
+
+    // Resetează bifările fără a șterge produsele din coș
+    window.resetPurchased = function() {
+        const cart = lists[currentListId].shoppingCart || [];
+        const count = cart.filter(i => i.purchased).length;
+        if (count === 0) return;
+        if (!confirm(`Resetezi selecția?\n\n↩️ ${count} produs${count === 1 ? '' : 'e'} vor fi debifate.\nProdusele rămân în lista de cumpărături.`)) return;
+        cart.forEach(item => { item.purchased = false; });
+        saveData(); renderShoppingList();
     };
 
     function updateStats() { updateHeaderStats(currentTab); }
