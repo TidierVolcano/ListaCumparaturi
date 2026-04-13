@@ -292,6 +292,29 @@
         .filter-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
         .filter-tab:active { transform:scale(0.95); }
         .highlight { background-color:rgba(255,235,59,0.3); padding:2px 4px; border-radius:3px; }
+        /* Buton reset selecție din header */
+        #resetSelectionHeaderBtn {
+            background: rgba(255,255,255,0.35);
+            border: 1.5px solid rgba(255,255,255,0.6);
+            position: relative;
+        }
+        #resetSelectionHeaderBtn .reset-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--warning);
+            color: #fff;
+            font-size: 0.55em;
+            font-weight: bold;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 3px;
+            pointer-events: none;
+        }
         .github-token-group { background:var(--bg-secondary); border-radius:10px; padding:15px; margin-bottom:10px; }
         .github-token-group label { display:block; margin-bottom:8px; font-weight:600; color:var(--text-primary); }
         .github-token-group input { width:100%; padding:10px 12px; border:2px solid var(--border); border-radius:8px; background:var(--bg-primary); color:var(--text-primary); font-size:0.95em; transition:border-color 0.3s; }
@@ -325,6 +348,7 @@
                 </div>
             </div>
             <div class="header-actions">
+                <button class="icon-btn" id="resetSelectionHeaderBtn" onclick="deselectAllProducts()" title="Resetează selecția" style="display:none;">↩️</button>
                 <button class="icon-btn" onclick="exportToPDF()" title="Export PDF">📄</button>
                 <button class="icon-btn" onclick="shareShoppingList()" title="Distribuie Lista" id="shareBtn">📤</button>
                 <button class="icon-btn" onclick="openSettingsModal()" title="Setări">⚙️</button>
@@ -1016,20 +1040,14 @@
         const deselectBtn = document.getElementById('deselectAllFabOption');
         if (deselectBtn) deselectBtn.style.display = (lists[currentListId].shoppingCart && lists[currentListId].shoppingCart.length > 0) ? 'flex' : 'none';
 
-        // Bara de resetare selecție — apare când cel puțin un produs e în coș
+        // Butonul de reset din header — apare când cel puțin un produs e în coș
         const cartCount = (lists[currentListId].shoppingCart || []).length;
-        if (cartCount > 0) {
-            const cartTotal = lists[currentListId].shoppingCart.reduce((s,i) => s + ((i.price||0)*(i.quantity||1)), 0);
-            const bar = document.createElement('div');
-            bar.className = 'reset-selection-bar';
-            bar.innerHTML = `
-                <div class="reset-selection-info">
-                    <div class="reset-selection-count">🛍️ ${cartCount} produs${cartCount === 1 ? '' : 'e'} selectate</div>
-                    ${settings.showPrices ? `<div class="reset-selection-total">💰 ${cartTotal.toFixed(2)} lei estimat</div>` : ''}
-                </div>
-                <button class="reset-selection-btn" onclick="deselectAllProducts()">↩️ Resetează</button>`;
-            container.appendChild(bar);
+        const resetHeaderBtn = document.getElementById('resetSelectionHeaderBtn');
+        if (resetHeaderBtn) {
+            resetHeaderBtn.style.display = cartCount > 0 ? 'flex' : 'none';
+            resetHeaderBtn.innerHTML = `↩️<span class="reset-badge">${cartCount}</span>`;
         }
+
         saveData();
     }
 
@@ -1204,7 +1222,7 @@
         if (cart.length === 0) return;
         if (!confirm(`Resetezi selecția?\n\n↩️ ${cart.length} produs${cart.length === 1 ? '' : 'e'} vor fi debifate și scoase din coș.\nProdusele rămân în lista de produse.`)) return;
         lists[currentListId].shoppingCart = [];
-        saveData(); renderCategories(); renderShoppingList();
+        saveData(); renderCategories(); renderShoppingList(); updateResetHeaderBtn();
         const deselectBtn = document.getElementById('deselectAllFabOption');
         if (deselectBtn) deselectBtn.style.display = 'none';
     };
@@ -1224,8 +1242,16 @@
         } else if (!isChecked && index !== -1) {
             cart.splice(index, 1);
         }
-        renderShoppingList(); updateShoppingStats(); saveData();
+        renderShoppingList(); updateShoppingStats(); saveData(); updateResetHeaderBtn();
     };
+
+    function updateResetHeaderBtn() {
+        const cartCount = (lists[currentListId].shoppingCart || []).length;
+        const btn = document.getElementById('resetSelectionHeaderBtn');
+        if (!btn) return;
+        btn.style.display = cartCount > 0 ? 'flex' : 'none';
+        btn.innerHTML = `↩️<span class="reset-badge">${cartCount}</span>`;
+    }
 
     function renderShoppingList() {
         const container = document.getElementById('shoppingList');
