@@ -1814,7 +1814,7 @@ Raspunde DOAR cu acest JSON, fara alt text:
         }
         doc.setFontSize(8); doc.setTextColor(128,128,128);
         doc.text('Generat de Lista Smart Pro', pageWidth/2, pageHeight-10, {align:'center'});
-        doc.save(`Lista_Cumparaturi_${new Date().toISOString().split('T')[0]}.pdf`);
+        doc.save(`ListaCumparaturi_${new Date().toISOString().split('T')[0]}.pdf`);
         setTimeout(() => alert('✅ PDF generat cu succes!'), 300);
     };
 
