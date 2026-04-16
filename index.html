@@ -93,7 +93,12 @@
         .suggestion-chip { background:rgba(255,255,255,0.2); padding:8px 15px; border-radius:20px; font-size:0.9em; border:1px solid rgba(255,255,255,0.3); cursor:pointer; transition:all 0.3s; touch-action:manipulation; display:flex; align-items:center; gap:5px; }
         .suggestion-chip:active { background:rgba(255,255,255,0.4); transform:scale(0.95); }
         .category { margin-bottom:20px; background:var(--bg-secondary); border-radius:12px; overflow:hidden; box-shadow:0 2px 8px var(--shadow); }
-        .category-header { display:flex; justify-content:space-between; align-items:center; padding:15px; background:var(--bg-primary); border-bottom:2px solid var(--primary); }
+        .category.dragging { opacity:0.5; box-shadow:0 0 0 3px var(--primary); }
+        .category.drag-over { box-shadow:0 0 0 3px var(--success); background:rgba(76,175,80,0.04); }
+        .category-header { display:flex; justify-content:space-between; align-items:center; padding:15px; background:var(--bg-primary); border-bottom:2px solid var(--primary); cursor:grab; }
+        .category-header:active { cursor:grabbing; }
+        .cat-drag-handle { color:var(--text-secondary); font-size:1.2em; padding:0 6px; opacity:0.45; user-select:none; cursor:grab; }
+        .cat-drag-handle:hover { opacity:1; color:var(--primary); }
         .category-name { font-size:1.2em; font-weight:bold; color:var(--text-primary); flex:1; }
         .category-stats { font-size:0.85em; color:var(--text-secondary); margin-right:10px; }
         .category-controls { display:flex; gap:5px; }
@@ -105,7 +110,9 @@
         .product-item.drag-over { border-color:var(--success); background:rgba(76,175,80,0.1); }
         .product-checkbox { grid-row:1/3; width:24px; height:24px; cursor:pointer; accent-color:var(--primary); }
         .product-info { grid-column:2; display:flex; flex-direction:column; gap:5px; }
-        .product-name { font-size:1em; font-weight:500; color:var(--text-primary); }
+        .product-name { font-size:1em; font-weight:500; color:var(--text-primary); display:flex; align-items:center; gap:4px; }
+        .prod-drag-handle { color:var(--text-secondary); font-size:0.85em; opacity:0.35; user-select:none; cursor:grab; flex-shrink:0; }
+        .prod-drag-handle:hover { opacity:0.8; color:var(--primary); }
         .product-meta { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
         .product-price { background:rgba(76,175,80,0.1); color:var(--success); padding:3px 8px; border-radius:5px; font-size:0.85em; font-weight:bold; }
         .product-store { background:rgba(33,150,243,0.1); color:var(--info); padding:3px 8px; border-radius:5px; font-size:0.85em; }
@@ -175,7 +182,6 @@
         input:checked + .slider:before { transform:translateX(22px); }
         .badge { display:inline-block; padding:4px 8px; background:var(--primary); color:white; border-radius:12px; font-size:0.75em; font-weight:bold; margin-left:8px; }
         @media (max-width:768px) { .templates-grid{grid-template-columns:1fr} .stats-grid{grid-template-columns:1fr} }
-        /* iPhone 15 și ecrane mici: header pe două rânduri */
         @media (max-width:480px) {
             .header-left { flex-direction:column; align-items:flex-start; gap:8px; }
             .header h1 { font-size:1.1em; }
@@ -208,7 +214,6 @@
         .btn-reorder { background:var(--primary); color:white; }
         .empty-history { text-align:center; padding:60px 20px; color:var(--text-secondary); }
         .empty-history-icon { font-size:4em; margin-bottom:20px; opacity:0.3; }
-        /* Bara de salvare în istoric — apare când există produse bifate */
         .save-history-bar {
             position: sticky;
             bottom: calc(10px + env(safe-area-inset-bottom));
@@ -252,7 +257,6 @@
             padding: 10px 14px;
         }
         .save-history-actions { display:flex; gap:8px; flex-shrink:0; }
-        /* Bara de resetare selecție din tab-ul Produse */
         .reset-selection-bar {
             position: sticky;
             bottom: calc(10px + env(safe-area-inset-bottom));
@@ -293,7 +297,6 @@
         .filter-tab.active { background:var(--primary); color:white; border-color:var(--primary); }
         .filter-tab:active { transform:scale(0.95); }
         .highlight { background-color:rgba(255,235,59,0.3); padding:2px 4px; border-radius:3px; }
-        /* Buton reset selecție din header */
         #resetSelectionHeaderBtn {
             background: rgba(255,255,255,0.35);
             border: 1.5px solid rgba(255,255,255,0.6);
@@ -771,7 +774,6 @@
     function checkForImport() {
         const urlParams = new URLSearchParams(window.location.search);
 
-        // Sistem vechi base64
         const importData = urlParams.get('import');
         if (importData) {
             try {
@@ -787,7 +789,6 @@
             return;
         }
 
-        // Sistem nou GitHub Gist
         const gistId = urlParams.get('gist');
         if (!gistId) return;
 
@@ -916,7 +917,6 @@
         chips.innerHTML = '<span style="opacity:0.8;font-size:0.9em;">⏳ Generez sugestii...</span>';
         if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
 
-        // Construiește contextul listei
         const allProducts = [];
         lists[currentListId].categories.forEach(cat => {
             cat.products.forEach(p => allProducts.push({ name: p.name, category: cat.name, store: p.store || '' }));
@@ -926,12 +926,10 @@
         const dayNames = ['duminică','luni','marți','miercuri','joi','vineri','sâmbătă'];
         const today = dayNames[new Date().getDay()];
 
-        // Construieste istoricul de cumparaturi pentru context
         const historyContext = historyProducts.length > 0
             ? historyProducts.slice(0, 40).join(', ')
             : 'nu exista istoric inca';
 
-        // Frecventa produselor din istoric
         const freq = {};
         purchaseHistory.forEach(i => { freq[i.product] = (freq[i.product] || 0) + 1; });
         const freqSorted = Object.entries(freq)
@@ -963,7 +961,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
         }
 
         try {
-            // Găsește primul model generateContent disponibil
             const modelsResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
             const modelsData = await modelsResp.json();
             if (modelsData.error) throw new Error(modelsData.error.message);
@@ -985,7 +982,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
             const data = await response.json();
             if (data.error) throw new Error(data.error.message);
             const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '[]';
-            // Curata backticks si extrage obiectele JSON individual
             const stripped = text.replace(/`/g, '').replace(/json/gi, '').trim();
             const objMatches = [...stripped.matchAll(/\{[^{}]*"product"\s*:\s*"([^"]+)"[^{}]*"reason"\s*:\s*"([^"]+)"[^{}]*\}/g)];
             const suggestions = objMatches.map(m => ({ product: m[1], reason: m[2] }));
@@ -997,7 +993,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
                 return;
             }
             suggestions.forEach(sug => {
-                // Găsește produsul exact în liste
                 const found = allProducts.find(p => p.name.toLowerCase() === sug.product.toLowerCase());
                 if (!found) return;
                 const chip = document.createElement('div');
@@ -1019,7 +1014,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
     };
 
     function showAISuggestions() {
-        // Arată butonul AI în header dacă e activat și există produse
         const btn = document.getElementById('aiBtnHeader');
         if (btn && settings.aiEnabled && lists[currentListId]?.categories?.length > 0) {
             btn.style.display = 'flex';
@@ -1071,18 +1065,26 @@ Raspunde DOAR cu acest JSON, fara alt text:
         categories.forEach((category, catIndex) => {
             const matchingProducts = searchQuery ? category.products.filter(p => p.name.toLowerCase().includes(searchQuery)) : category.products;
             if (searchQuery && matchingProducts.length === 0) return;
+
             const categoryDiv = document.createElement('div');
             categoryDiv.className = 'category';
+            // ---- category drag & drop ----
+            categoryDiv.draggable = true;
+            categoryDiv.dataset.catDragIndex = catIndex;
+            categoryDiv.addEventListener('dragstart', handleDragStart);
+            categoryDiv.addEventListener('dragover', handleDragOver);
+            categoryDiv.addEventListener('drop', handleDrop);
+            categoryDiv.addEventListener('dragend', handleDragEnd);
+
             let categoryTotal = 0;
             category.products.forEach(p => { categoryTotal += (p.price||0)*(p.quantity||1); });
             const headerDiv = document.createElement('div');
             headerDiv.className = 'category-header';
             headerDiv.innerHTML = `
+                <span class="cat-drag-handle" title="Trage pentru a reordona categoria">⠿</span>
                 <div class="category-name">${category.name}</div>
                 <div class="category-stats">${category.products.length} prod.${settings.showPrices ? ` • ${categoryTotal.toFixed(2)} lei` : ''}</div>
                 <div class="category-controls">
-                    ${catIndex > 0 ? `<button class="small-btn" onclick="moveCategory(${catIndex},-1)">↑</button>` : ''}
-                    ${catIndex < categories.length-1 ? `<button class="small-btn" onclick="moveCategory(${catIndex},1)">↓</button>` : ''}
                     <button class="small-btn" onclick="deleteCategory(${catIndex})">🗑️</button>
                 </div>`;
             const productsDiv = document.createElement('div');
@@ -1103,7 +1105,7 @@ Raspunde DOAR cu acest JSON, fara alt text:
                 productDiv.innerHTML = `
                     <input type="checkbox" class="product-checkbox" ${inCart ? 'checked' : ''} onchange="toggleProduct('${category.name}','${product.name}',this.checked)">
                     <div class="product-info">
-                        <div class="product-name">${displayName}</div>
+                        <div class="product-name"><span class="prod-drag-handle" title="Trage pentru a reordona">⠿</span> ${displayName}</div>
                         <div class="product-meta">
                             ${settings.showPrices && product.price ? `<span class="product-price">${product.price.toFixed(2)} lei</span>` : ''}
                             ${product.store ? `<span class="product-store">${product.store}</span>` : ''}
@@ -1135,7 +1137,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
         const deselectBtn = document.getElementById('deselectAllFabOption');
         if (deselectBtn) deselectBtn.style.display = (lists[currentListId].shoppingCart && lists[currentListId].shoppingCart.length > 0) ? 'flex' : 'none';
 
-        // Butonul de reset din header — apare când cel puțin un produs e în coș
         const cartCount = (lists[currentListId].shoppingCart || []).length;
         const resetHeaderBtn = document.getElementById('resetSelectionHeaderBtn');
         if (resetHeaderBtn) {
@@ -1148,24 +1149,66 @@ Raspunde DOAR cu acest JSON, fara alt text:
 
     // ==================== DRAG & DROP ====================
     let draggedElement = null;
-    function handleDragStart(e) { draggedElement = this; this.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }
-    function handleDragOver(e) { if (e.preventDefault) e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if (this !== draggedElement) this.classList.add('drag-over'); return false; }
+
+    function handleDragStart(e) {
+        draggedElement = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.stopPropagation();
+    }
+
+    function handleDragOver(e) {
+        if (e.preventDefault) e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (this !== draggedElement) this.classList.add('drag-over');
+        return false;
+    }
+
     function handleDrop(e) {
         if (e.stopPropagation) e.stopPropagation();
-        if (draggedElement !== this) {
-            const fromCat = parseInt(draggedElement.dataset.catIndex);
-            const fromProd = parseInt(draggedElement.dataset.prodIndex);
-            const toCat = parseInt(this.dataset.catIndex);
-            if (fromCat !== toCat) {
-                const product = lists[currentListId].categories[fromCat].products[fromProd];
-                lists[currentListId].categories[toCat].products.push(product);
-                lists[currentListId].categories[fromCat].products.splice(fromProd, 1);
+        this.classList.remove('drag-over');
+        if (!draggedElement || draggedElement === this) return false;
+
+        const fromProdIdx = draggedElement.dataset.prodIndex;
+        const toProdIdx   = this.dataset.prodIndex;
+        const fromCatDrag = draggedElement.dataset.catDragIndex;
+        const toCatDrag   = this.dataset.catDragIndex;
+
+        if (fromProdIdx !== undefined && toProdIdx !== undefined) {
+            // ---- product drag ----
+            const fromCat  = parseInt(draggedElement.dataset.catIndex);
+            const fromProd = parseInt(fromProdIdx);
+            const toCat    = parseInt(this.dataset.catIndex);
+            const toProd   = parseInt(toProdIdx);
+
+            if (fromCat === toCat && fromProd !== toProd) {
+                // reorder within same category — swap positions
+                const prods = lists[currentListId].categories[fromCat].products;
+                [prods[fromProd], prods[toProd]] = [prods[toProd], prods[fromProd]];
+            } else if (fromCat !== toCat) {
+                // move to different category — insert at target position
+                const product = lists[currentListId].categories[fromCat].products.splice(fromProd, 1)[0];
+                lists[currentListId].categories[toCat].products.splice(toProd, 0, product);
+            }
+            renderCategories();
+
+        } else if (fromCatDrag !== undefined && toCatDrag !== undefined) {
+            // ---- category drag — swap positions ----
+            const fi = parseInt(fromCatDrag);
+            const ti = parseInt(toCatDrag);
+            if (fi !== ti) {
+                const cats = lists[currentListId].categories;
+                [cats[fi], cats[ti]] = [cats[ti], cats[fi]];
                 renderCategories();
             }
         }
-        this.classList.remove('drag-over'); return false;
+        return false;
     }
-    function handleDragEnd(e) { this.classList.remove('dragging'); document.querySelectorAll('.product-item').forEach(i => i.classList.remove('drag-over')); }
+
+    function handleDragEnd(e) {
+        this.classList.remove('dragging');
+        document.querySelectorAll('.product-item, .category').forEach(i => i.classList.remove('drag-over', 'dragging'));
+    }
 
     // ==================== MOVE PRODUCT ====================
     window.openMoveProductModal = function(catIndex, prodIndex) {
@@ -1400,7 +1443,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
             container.appendChild(catDiv);
         });
 
-        // Bara de salvare în istoric — apare când cel puțin un produs e bifat
         const purchased = cart.filter(i => i.purchased);
         if (purchased.length > 0) {
             const purchasedCost = purchased.reduce((s,i) => s + ((i.price||0)*(i.quantity||1)), 0);
@@ -1456,7 +1498,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
         renderShoppingList(); saveData();
     };
 
-    // Resetează bifările fără a șterge produsele din coș
     window.resetPurchased = function() {
         const cart = lists[currentListId].shoppingCart || [];
         const count = cart.filter(i => i.purchased).length;
@@ -1625,8 +1666,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
         if (savedLists) lists = JSON.parse(savedLists);
         if (savedListId) currentListId = savedListId;
 
-        // Validare: dacă currentListId nu mai există în lists (lista a fost ștearsă),
-        // folosim prima disponibilă sau recreăm 'default'
         if (!lists[currentListId]) {
             const keys = Object.keys(lists);
             currentListId = keys.length > 0 ? keys[0] : 'default';
@@ -1639,7 +1678,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
         if (savedSettings) { settings = JSON.parse(savedSettings); document.documentElement.setAttribute('data-theme', settings.darkMode ? 'dark' : 'light'); }
         if (savedHistory) purchaseHistory = JSON.parse(savedHistory);
         if (savedTrips) shoppingTrips = JSON.parse(savedTrips);
-        // Check for old shared list in URL
         const urlParams = new URLSearchParams(window.location.search);
         const sharedList = urlParams.get('list');
         if (sharedList) {
@@ -1681,7 +1719,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
         shoppingTrips.unshift(trip);
         lists[currentListId].shoppingCart = cart.filter(item => !item.purchased);
         saveData(); renderShoppingList();
-        // Navigare automată spre Istoric
         switchTab('history');
         alert(`✅ Salvat în Istoric!\n\n📦 ${purchasedItems.length} produse • 💰 ${totalCost.toFixed(2)} lei`);
     };
@@ -1851,7 +1888,6 @@ Raspunde DOAR cu acest JSON, fara alt text:
         const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/TidierVolcano/ListaCumparaturi/main/ProduseListaPrincipala.json';
         if (!confirm('🔄 Reset din GitHub\n\nÎnlocuiești toate categoriile și produsele cu versiunea din GitHub?\n\n⚠️ Lista de cumpărături curentă va fi PĂSTRATĂ.\nContinui?')) return;
 
-        // Verificare defensivă
         if (!lists[currentListId]) {
             const keys = Object.keys(lists);
             currentListId = keys.length > 0 ? keys[0] : 'default';
