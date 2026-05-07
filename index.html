@@ -555,11 +555,22 @@
                 <div class="settings-label">💰 Afișare Prețuri</div>
                 <label class="switch"><input type="checkbox" id="pricesToggle" checked onchange="togglePrices()"><span class="slider"></span></label>
             </div>
+            <!-- GitHub Token -->
+            <div class="github-token-group">
+                <label>🔐 GitHub Personal Access Token</label>
+                <input type="password" id="githubTokenInput" placeholder="ghp_..." oninput="saveGithubToken(this.value)">
+                <div class="hint">
+                    Necesar pentru a salva modificările direct pe GitHub.<br>
+                    <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong><br>
+                    Permisiuni necesare: selectează repo-ul tău → <strong>Contents → Read and write</strong>
+                </div>
+            </div>
             <button class="btn btn-secondary" onclick="exportData()">📥 Export Date Complete</button>
             <button class="btn btn-secondary" onclick="importData()">📤 Import Date Complete</button>
             <button class="btn btn-primary" onclick="exportProducts()">📋 Export Lista Produse</button>
             <button class="btn btn-primary" onclick="importProducts()">📋 Import Lista Produse</button>
             <button class="btn btn-secondary" onclick="clearHistory()">🗑️ Șterge Istoric</button>
+            <button class="btn btn-primary" id="saveToGithubBtn" onclick="saveToGitHub()" style="background:linear-gradient(135deg,#2ea44f,#2c974b);margin-top:5px;">💾 Salvează pe GitHub</button>
             <button class="btn btn-primary" onclick="resetFromGitHub()" style="background:linear-gradient(135deg,#24292e,#404448);margin-top:5px;">🔄 Reset GitHub</button>
         </div>
     </div>
@@ -1908,15 +1919,94 @@ Raspunde DOAR cu acest JSON, fara alt text:
             const response = await fetch(GITHUB_RAW_URL + '?t=' + Date.now());
             if (!response.ok) throw new Error('HTTP ' + response.status);
             const imported = await response.json();
-            if (!imported.categories || !Array.isArray(imported.categories)) throw new Error('Format JSON invalid');
+            const importedCategories = imported.categories || imported.lists?.default?.categories;
+            if (!importedCategories || !Array.isArray(importedCategories)) throw new Error('Format JSON invalid');
             const currentCart = lists[currentListId].shoppingCart || [];
-            lists[currentListId].categories = imported.categories.map(cat => ({name:cat.name,products:(cat.products||[]).map(p => ({name:p.name,price:p.price||0,store:p.store||'',barcode:p.barcode||'',quantity:p.quantity||1,excluded:p.excluded||false}))}));
+            lists[currentListId].categories = importedCategories.map(cat => ({name:cat.name,products:(cat.products||[]).map(p => ({name:p.name,price:p.price||0,store:p.store||'',barcode:p.barcode||'',quantity:p.quantity||1,excluded:p.excluded||false}))}));
             lists[currentListId].shoppingCart = currentCart.filter(cartItem => lists[currentListId].categories.some(cat => cat.name === cartItem.category && cat.products.some(p => p.name === cartItem.product)));
             saveData(); renderCategories(); renderShoppingList(); updateStats();
             const totalProducts = lists[currentListId].categories.reduce((sum,cat) => sum+cat.products.length, 0);
             alert(`✅ Reset complet din GitHub!\n\n📁 ${lists[currentListId].categories.length} categorii\n📦 ${totalProducts} produse`);
         } catch(error) {
             alert('❌ Eroare la descărcarea din GitHub!\n\n' + error.message);
+        } finally {
+            if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
+        }
+    };
+
+    // ==================== SAVE TO GITHUB ====================
+    window.saveToGitHub = async function() {
+        const token = localStorage.getItem('githubToken');
+        if (!token) {
+            alert('❌ Lipsă token GitHub!\n\nDeschide Setări → GitHub Personal Access Token și adaugă tokenul tău.');
+            return;
+        }
+
+        const totalProd = (lists[currentListId]?.categories || []).reduce((s,c) => s + (c.products||[]).length, 0);
+        if (!confirm(`💾 Salvezi lista pe GitHub?\n\n📁 ${(lists[currentListId]?.categories||[]).length} categorii\n📦 ${totalProd} produse\n\n⚠️ Aceasta va suprascrie fișierul ProduseListaPrincipala.json din repo-ul tău.\nContinui?`)) return;
+
+        const OWNER = 'TidierVolcano';
+        const REPO = 'ListaCumparaturi';
+        const FILE_PATH = 'ProduseListaPrincipala.json';
+        const API_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+        };
+
+        const btn = document.getElementById('saveToGithubBtn');
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) { btn.innerHTML = '⏳ Se salvează...'; btn.disabled = true; }
+
+        try {
+            // Obținem SHA-ul curent al fișierului (necesar pentru update prin API)
+            const getResp = await fetch(API_URL, { headers });
+            if (!getResp.ok) {
+                if (getResp.status === 401) throw new Error('Token invalid sau expirat');
+                if (getResp.status === 403) throw new Error('Token fără permisiuni de scriere pe acest repo');
+                if (getResp.status === 404) throw new Error('Repo sau fișier negăsit — verifică că tokenul are acces la ' + OWNER + '/' + REPO);
+                throw new Error('HTTP ' + getResp.status);
+            }
+            const fileData = await getResp.json();
+            const sha = fileData.sha;
+
+            // Construim JSON în formatul original al fișierului
+            const contentObj = {
+                lists: {
+                    default: {
+                        name: lists[currentListId]?.name || 'Lista Principală',
+                        categories: lists[currentListId]?.categories || []
+                    }
+                }
+            };
+
+            const jsonStr = JSON.stringify(contentObj, null, 2);
+            // GitHub API necesită conținut codificat Base64
+            const contentBase64 = btoa(unescape(encodeURIComponent(jsonStr)));
+
+            // Actualizăm fișierul pe GitHub
+            const putResp = await fetch(API_URL, {
+                method: 'PUT',
+                headers: { ...headers, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: 'Actualizare lista produse - ' + new Date().toLocaleString('ro-RO'),
+                    content: contentBase64,
+                    sha: sha
+                })
+            });
+
+            if (!putResp.ok) {
+                const errData = await putResp.json().catch(() => ({}));
+                throw new Error('HTTP ' + putResp.status + ': ' + (errData.message || 'Eroare necunoscută'));
+            }
+
+            const cats = (lists[currentListId]?.categories || []).length;
+            const prods = (lists[currentListId]?.categories || []).reduce((s,c) => s + (c.products||[]).length, 0);
+            alert('✅ Salvat pe GitHub!\n\n📁 ' + cats + ' categorii\n📦 ' + prods + ' produse');
+        } catch(error) {
+            alert('❌ Eroare la salvarea pe GitHub!\n\n' + error.message);
         } finally {
             if (btn) { btn.innerHTML = originalText; btn.disabled = false; }
         }
