@@ -290,6 +290,56 @@
               "name": "Sparanghel",
               "price": 0,
               "store": "Lidl",
+              "barcode": "",
+              "quantity": 1,
+              "excluded": false
+            },
+            {
+              "name": "Capsune",
+              "price": 14.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Ciuperci",
+              "price": 18.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Grapefruit",
+              "price": 9.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Lime",
+              "price": 1.39,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Mere Golden",
+              "price": 5.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Pere Abate",
+              "price": 11.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Struguri Roze",
+              "price": 12.99,
+              "store": "Lidl",
               "excluded": false,
               "quantity": 1
             }
@@ -654,12 +704,70 @@
               "name": "Ansoa",
               "price": 0,
               "store": "Lidl",
-              "excluded": false,
-              "quantity": 1
+              "barcode": "",
+              "quantity": 1,
+              "excluded": false
             },
             {
               "name": "Capere",
               "price": 0,
+              "store": "Lidl",
+              "barcode": "",
+              "quantity": 1,
+              "excluded": false
+            },
+            {
+              "name": "Ciocolata",
+              "price": 18.99,
+              "store": "Mega Image",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Kinder",
+              "price": 0,
+              "store": "Mega Image",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Biscuiti Digestivi",
+              "price": 4.49,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Piper boabe",
+              "price": 1.29,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Zahar Vanilat",
+              "price": 1.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Fulgi de ovaz",
+              "price": 15.49,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Smochine uscate",
+              "price": 10.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Prune uscate",
+              "price": 8.05,
               "store": "Lidl",
               "excluded": false,
               "quantity": 1
@@ -950,13 +1058,36 @@
               "name": "Ayran",
               "price": 0,
               "store": "Mega Image",
-              "excluded": false,
-              "quantity": 1
+              "barcode": "",
+              "quantity": 1,
+              "excluded": false
             },
             {
               "name": "Kefir",
               "price": 0,
               "store": "Mega Image",
+              "barcode": "",
+              "quantity": 1,
+              "excluded": false
+            },
+            {
+              "name": "Branza Bio Wiesentalr",
+              "price": 12.99,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Telemea capra",
+              "price": 15.19,
+              "store": "Lidl",
+              "excluded": false,
+              "quantity": 1
+            },
+            {
+              "name": "Telemea oaie",
+              "price": 14.99,
+              "store": "Lidl",
               "excluded": false,
               "quantity": 1
             }
